@@ -1,11 +1,11 @@
-# The following creates two functions: makeCacheMatrix and cacheSolve. The purpose is to
-# perform, store, and retrieve potentially time-consuming calculations.
+## This code creates two functions: makeCacheMatrix and cacheSolve. The purpose is to
+## perform, store, and retrieve a potentially time-consuming matrix inverse calculation
 
-# The function makeCacheMatrix creates a list containing following functions:
-# 1. set the value of a matrix
-# 2. get the value of the matrix
-# 3. set the inverse of the matrix
-# 4. get the inverse of the matrix
+## The function makeCacheMatrix creates a list containing the following functions:
+## 1. set the value of a matrix
+## 2. get the value of the matrix
+## 3. set the inverse of the matrix
+## 4. get the inverse of the matrix
 
 makeCacheMatrix <- function(x = matrix()) {
     inv <- NULL
@@ -13,18 +13,19 @@ makeCacheMatrix <- function(x = matrix()) {
         x <<- y
         inv <<- NULL
     }
-    get <- function() x
-    setinverse <- function(inverse) inv <<- inverse
-    getinverse <- function() inv
-    list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
+get <- function() x
+setinverse <- function(matinverse) inv <<- matinverse
+getinverse <- function() inv
+list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
 }
 
-# The function cacheSolve checks to see if the inverse of given a square matrix has already 
-# been calculated. If not, the function calculates and sets the value of the inverse using
-# the setinverse function defined in makeCacheMatrix. If the inverse is already stored, 
-# then cacheSolve retrieves the inverse and presents the value.
+## Given a square matrix, the function cacheSolve checks to see if the
+## inverse has already been calculated. If not, the function calculates
+## the inverse and stores the value using the setinverse function defined
+## in makeCacheMatrix. If the inverse is already stored, then cacheSolve
+## retrieves the inverse and prints the value.
 
-cacheSolve <- function(x, ...) {
+cacheSolve <- function(x, ...){
     inv <- x$getinverse()
     if(!is.null(inv)) {
         message("getting cached data.")
@@ -35,3 +36,14 @@ cacheSolve <- function(x, ...) {
     x$setinverse(inv)
     inv
 }
+
+## test run:
+x <- rbind(c(1,2), c(3,4))
+cm <- makeCacheMatrix(x)
+cm$get()
+
+# no chace for first run
+cacheSolve(cm)
+
+# retrieve from cache in second run
+cacheSolve(cm)
